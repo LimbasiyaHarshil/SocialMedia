@@ -13,6 +13,7 @@ const Chat = () => {
   const dispatch = useDispatch();
   const socket = useRef();
   const { user } = useSelector((state) => state.authReducer.authData);
+  console.log(user);
 
   const [chats, setChats] = useState([]);
   const [onlineUsers, setOnlineUsers] = useState([]);
@@ -43,21 +44,20 @@ const Chat = () => {
 
   // Send Message to socket server
   useEffect(() => {
-    if (sendMessage!==null) {
-      socket.current.emit("send-message", sendMessage);}
+    if (sendMessage !== null) {
+      socket.current.emit("send-message", sendMessage);
+    }
   }, [sendMessage]);
 
 
   // Get the message from socket server
   useEffect(() => {
-    socket.current.on("recieve-message", (data) => {
+    socket.current.on("receive-message", (data) => {
       console.log(data)
       setReceivedMessage(data);
     }
-
     );
   }, []);
-
 
   const checkOnlineStatus = (chat) => {
     const chatMember = chat.members.find((member) => member !== user._id);
